@@ -17,6 +17,7 @@ public class ForceTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (Mouse.current.leftButton.isPressed)
         {
             Vector3 mousePostion = Mouse.current.position.ReadValue();
@@ -28,7 +29,7 @@ public class ForceTest : MonoBehaviour
             rb.AddForce(directionToApplyForce.normalized * forceStrength, ForceMode2D.Force);
         }
 
-        if (Mouse.current.rightButton.isPressed)
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             Vector3 mousePostion = Mouse.current.position.ReadValue();
             Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePostion);
@@ -38,6 +39,11 @@ public class ForceTest : MonoBehaviour
 
             rb.AddForce(directionToApplyForce.normalized * forceStrength, ForceMode2D.Impulse); //Default on ForceMode2D.Force 
         }
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(Vector3.right * 1f, ForceMode2D.Force);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
