@@ -18,6 +18,7 @@ public class ConceptTesting : MonoBehaviour
     void Update()
     {
 
+        //move in direction of where mouse is point and spin object
         if (Keyboard.current.qKey.isPressed)
         {
             Vector3 mousePostion = Mouse.current.position.ReadValue();
@@ -33,6 +34,7 @@ public class ConceptTesting : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        //If player collides with an object with the wall tag, ignore collider
         if (collision.collider.CompareTag("Wall"))
         {
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
@@ -41,6 +43,7 @@ public class ConceptTesting : MonoBehaviour
                 Debug.Log("Fake Wall");
             }
         }
+        //If collider is not ignored, print in consol its a real wall
         if(Physics2D.GetIgnoreCollision(collision.collider, GetComponent<Collider2D>())) 
         {
             Debug.Log("Real Wall");

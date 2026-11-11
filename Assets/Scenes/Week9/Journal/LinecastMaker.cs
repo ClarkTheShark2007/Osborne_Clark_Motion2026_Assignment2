@@ -15,6 +15,7 @@ public class LinecastMaker : MonoBehaviour
 
         RaycastHit2D objectHit = Physics2D.Linecast(lineCastStart, lineCastEnd);
 
+        //See if player goes in between lines, if so print consol message with gameobject name
         if(objectHit.collider != null)
         {
             Debug.Log("Laser has hit " + objectHit.collider.gameObject.name);
