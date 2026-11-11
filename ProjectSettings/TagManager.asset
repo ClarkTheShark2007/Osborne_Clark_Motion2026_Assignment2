@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - CannonBall
+  - Wall
   layers:
   - Default
   - TransparentFX
