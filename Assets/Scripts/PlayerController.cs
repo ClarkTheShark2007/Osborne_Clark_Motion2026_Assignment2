@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +6,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D playerRb;
     Vector2 playerInput;
 
+    //Everything is seperated by headers to make it easier to see in the editor
     [Header("Horziontal Movement")]
     public float maxSpeed;
     [SerializeField] Vector2 velocity;
@@ -16,6 +14,10 @@ public class PlayerController : MonoBehaviour
     public float speedGainedTime;
     float timeToReachStopMoving; 
     public float speedLostTime;
+    
+    [field: Header("Vertical Movement")]
+    public LayerMask groundLayer;
+    public float distanceFromGround;
 
 
     public enum FacingDirection
@@ -34,21 +36,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //The input from the player needs to be determined and then passed in the to the MovementUpdate which should
-        //manage the actual movement of the character.
         MovementUpdate(playerInput);
     }
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        //playerInput is determined below with OnMove
+
+        //Accerlation
         velocity = velocity + playerInput.normalized * timeToReachMaxAcceleration * Time.deltaTime;
         playerRb.linearVelocity = velocity;
 
+        //Max Speed Capper
         if(velocity.magnitude >= maxSpeed)
         {
             velocity = velocity.normalized * maxSpeed;
         }
 
+        //Decerlateion 
         if(playerInput == Vector2.zero)
         {
             velocity -= velocity.normalized * timeToReachStopMoving * Time.deltaTime;
@@ -61,6 +66,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsWalking()
     {
+        //Animator bool to see if the player is Walking
         if(playerInput == Vector2.zero)
         {
             return false;
@@ -72,7 +78,8 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return true;
+        //To see if the player can jump or not, also determines animation. Shoots a raycast detecting for any layer considered ground
+        return Physics2D.Raycast(transform.position, Vector2.down, distanceFromGround, groundLayer);
     }
 
     private FacingDirection lastFacedDirection;
@@ -87,11 +94,13 @@ public class PlayerController : MonoBehaviour
             lastFacedDirection = FacingDirection.left;
         }
 
+        //Gets previous facing direction, so the player dosnt always face a certain after moving is completed
         return lastFacedDirection;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        //See InputAction Map for controls. Works with controllers 
         if(context.performed)
         {
             playerInput = context.ReadValue<Vector2>();
