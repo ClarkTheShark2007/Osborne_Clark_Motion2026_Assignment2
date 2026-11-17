@@ -61,16 +61,33 @@ public class PlayerController : MonoBehaviour
 
     public bool IsWalking()
     {
-        return false;
+        if(playerInput == Vector2.zero)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
     public bool IsGrounded()
     {
         return true;
     }
 
+    private FacingDirection lastFacedDirection;
     public FacingDirection GetFacingDirection()
     {
-        return FacingDirection.left;
+        if(playerInput.x >= 0.1)
+        {
+            lastFacedDirection = FacingDirection.right;
+        }
+        else if (playerInput.x <= -0.1)
+        {
+            lastFacedDirection = FacingDirection.left;
+        }
+
+        return lastFacedDirection;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -82,6 +99,7 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             playerInput = context.ReadValue<Vector2>();
+
         }
 
         playerInput.y = 0f;
