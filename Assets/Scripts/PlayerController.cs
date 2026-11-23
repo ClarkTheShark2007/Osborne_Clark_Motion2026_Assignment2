@@ -22,8 +22,10 @@ public class PlayerController : MonoBehaviour
     public float maxJumpHeight;
     public float jumpedGainedOverTime;
     float gravity;
+    public float maxGravity; 
     public float initialJumpVelocity;
     bool wasJumpTriggered;
+
 
 
     public enum FacingDirection
@@ -49,42 +51,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //private void MovementUpdate(Vector2 playerInput)
-    //{
-    //    //playerInput is determined below with OnMove
-    //    velocity = playerRb.linearVelocity;
-
-    //    //Accerlation
-    //    velocity.x = velocity.x + playerInput.normalized.x * timeToReachMaxAcceleration * Time.deltaTime;
-
-    //    //velocity.y = Mathf.Clamp(velocity.y, -4f, initialJumpVelocity);
-
-    //    //Decerlateion 
-    //    if (playerInput == Vector2.zero)
-    //    {
-    //        velocity.x -= velocity.normalized.x * timeToReachStopMoving * Time.deltaTime;
-    //        if(velocity.magnitude <= 0.1f)
-    //        {
-    //            velocity.x = 0f;
-    //        }
-    //    }
-
-    //    if (!IsGrounded()) 
-    //    {
-    //        velocity.y += gravity * Time.deltaTime;
-    //    }
-    //    else
-    //    {
-    //        //velocity.y = 0f;
-    //    }
-
-    //    //Max Speed Capp
-    //    velocity.x = Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
-
-    //    playerRb.linearVelocityX = velocity.x;
-    //    playerRb.linearVelocityY = velocity.y;
-    //}
-
     private void MovementUpdate(Vector2 playerInput)
     {
         velocity.y = playerRb.linearVelocity.y;
@@ -95,10 +61,10 @@ public class PlayerController : MonoBehaviour
         //Max Speed Capp
         velocity.x = Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
 
+
         if (playerInput == Vector2.zero)
         {
             velocity.x -= velocity.normalized.x * timeToReachStopMoving * Time.deltaTime;
-            //making sure we decelerate properly
             if (velocity.x < 0.1f && velocity.x > -0.1f)
             {
                 velocity.x = 0f;
@@ -111,13 +77,15 @@ public class PlayerController : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
         }
 
+        velocity.y = Mathf.Clamp(velocity.y, maxGravity, initialJumpVelocity);
+
         if (wasJumpTriggered)
         {
             velocity.y = initialJumpVelocity;
             wasJumpTriggered = false;
         }
 
-        //moving the rigid body
+        //Move the player rigid body
         playerRb.linearVelocity = velocity;
     }
 

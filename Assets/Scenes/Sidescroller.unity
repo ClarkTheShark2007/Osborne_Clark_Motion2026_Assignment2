@@ -1446,7 +1446,7 @@ CompositeCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0736d79501a55fd43b0c4c4f3bdbe7af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1721,6 +1721,7 @@ MonoBehaviour:
   jumpVelocity: {x: 0, y: 0}
   maxJumpHeight: 3
   jumpedGainedOverTime: 0.7
+  maxGravity: -4
   initialJumpVelocity: 0
 --- !u!4 &1433354315
 Transform:
